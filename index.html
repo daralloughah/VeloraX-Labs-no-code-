@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VeloraX Labs — Test lecture GitHub</title>
+<title>VeloraX Labs · no-code</title>
 <style>
   :root {
     --bg: #0a0e14;
@@ -14,177 +14,240 @@
     --muted: #6b7d93;
     --accent: #4ade80;
     --accent-dim: #1c3a2a;
+    --blue: #60a5fa;
     --danger: #f87171;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background:
-      radial-gradient(1200px 600px at 80% -10%, #13243a 0%, transparent 60%),
+      radial-gradient(1100px 520px at 85% -8%, #13243a 0%, transparent 58%),
       var(--bg);
     color: var(--text);
     font-family: var(--mono);
     min-height: 100vh;
-    padding: 22px 16px 60px;
+    padding: 20px 14px 70px;
     -webkit-font-smoothing: antialiased;
   }
   .brand {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 13px; letter-spacing: 0.5px; color: var(--muted);
-    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 9px;
+    font-size: 12px; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 3px;
   }
-  .brand .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 12px var(--accent);
+  .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  h1 { font-size: 21px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 18px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 16px; padding: 16px; margin-bottom: 14px;
   }
-  h1 {
-    font-size: 22px; font-weight: 600; line-height: 1.2;
-    margin-bottom: 6px; letter-spacing: -0.3px;
+  .card h2 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
   }
-  .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; }
-  label {
-    display: block; font-size: 11px; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--muted); margin: 16px 0 6px;
+  .step-num {
+    width: 18px; height: 18px; border-radius: 50%; background: var(--accent-dim);
+    color: var(--accent); font-size: 10px; display: grid; place-items: center; border: 1px solid #244534;
   }
-  input {
+  label { display: block; font-size: 11px; color: var(--muted); margin: 12px 0 5px; }
+  input, textarea, select {
     width: 100%; background: var(--panel-2); border: 1px solid var(--line);
     color: var(--text); font-family: var(--mono); font-size: 14px;
-    padding: 13px 14px; border-radius: 10px; outline: none;
-    transition: border-color .15s;
+    padding: 12px 13px; border-radius: 10px; outline: none; transition: border-color .15s;
   }
-  input:focus { border-color: var(--accent); }
-  .hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  textarea { resize: vertical; line-height: 1.5; }
+  .code-area { min-height: 180px; font-size: 12.5px; color: #b8c6d8; }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; }
+
   button {
-    width: 100%; margin-top: 24px; padding: 16px;
-    background: var(--accent); color: #06140c; border: none;
-    border-radius: 12px; font-family: var(--mono); font-size: 15px;
-    font-weight: 700; letter-spacing: 0.3px; cursor: pointer;
-    transition: transform .08s, opacity .15s;
+    width: 100%; padding: 14px; border: none; border-radius: 11px;
+    font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.2px;
+    cursor: pointer; transition: transform .08s, opacity .15s; margin-top: 14px;
   }
   button:active { transform: scale(0.985); }
-  button:disabled { opacity: 0.5; }
-  .panel {
-    background: var(--panel); border: 1px solid var(--line);
-    border-radius: 16px; padding: 18px 16px;
+  button:disabled { opacity: 0.45; }
+  .btn-primary { background: var(--accent); color: #06140c; }
+  .btn-blue { background: var(--blue); color: #07182e; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+
+  .status { margin-top: 12px; font-size: 13px; min-height: 16px; display: flex; gap: 7px; align-items: flex-start; }
+  .status.ok { color: var(--accent); }
+  .status.err { color: var(--danger); }
+  .status.work { color: var(--blue); }
+
+  details summary {
+    cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--muted); list-style: none; display: flex; align-items: center; gap: 8px;
   }
-  #status {
-    margin-top: 22px; font-size: 13px; min-height: 18px;
-    display: flex; align-items: center; gap: 8px;
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "⚙"; color: var(--muted); }
+  details[open] summary { margin-bottom: 8px; }
+
+  .pr-box {
+    margin-top: 14px; padding: 13px; border-radius: 11px;
+    background: var(--accent-dim); border: 1px solid #244534; display: none;
   }
-  #status.ok { color: var(--accent); }
-  #status.err { color: var(--danger); }
-  .result {
-    margin-top: 14px; display: none;
-  }
-  .result.show { display: block; }
-  .meta {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
-  }
-  .tag {
-    font-size: 11px; background: var(--accent-dim); color: var(--accent);
-    padding: 5px 10px; border-radius: 6px; border: 1px solid #244534;
-    word-break: break-all;
-  }
-  pre {
-    background: var(--panel-2); border: 1px solid var(--line);
-    border-radius: 10px; padding: 14px; font-size: 12.5px;
-    line-height: 1.55; color: #b8c6d8; white-space: pre-wrap;
-    word-break: break-word; max-height: 50vh; overflow: auto;
-  }
-  .footnote { color: var(--muted); font-size: 11px; margin-top: 26px; text-align: center; }
+  .pr-box.show { display: block; }
+  .pr-box a { color: var(--accent); word-break: break-all; font-size: 13px; }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .disabled-zone { opacity: 0.5; pointer-events: none; }
 </style>
 </head>
 <body>
-  <div class="brand"><span class="dot"></span>VELORAX LABS · NO-CODE</div>
-  <h1>Test lecture GitHub</h1>
-  <p class="sub">Vérifie que la fonction <b>github-read</b> peut lire un fichier de ton repo.</p>
+  <div class="brand"><span class="dot"></span>VELORAX LABS</div>
+  <h1>no-code agent</h1>
 
-  <div class="panel">
-    <label>URL Supabase</label>
-    <input id="supaUrl" value="https://valswafwmjbamttogbfe.supabase.co" />
+  <!-- CONFIG (repliée par défaut) -->
+  <div class="card">
+    <details>
+      <summary>Configuration</summary>
+      <label>URL Supabase</label>
+      <input id="supaUrl" value="https://valswafwmjbamttogbfe.supabase.co" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <label>Clé anon</label>
+      <input id="anonKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbHN3YWZ3bWpiYW10dG9nYmZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDEyODMsImV4cCI6MjA5NTI3NzI4M30.dapt8RxNk6_-wer_63pNuaMmjFbU93V-SmorNhJuAA0" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <div class="row">
+        <div><label>Owner</label><input id="owner" value="daralloughah" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
+        <div><label>Repo</label><input id="repo" value="Comptage" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
+      </div>
+      <label>Branche de base</label>
+      <input id="base" value="main" autocapitalize="none" autocorrect="off" spellcheck="false" />
+    </details>
+  </div>
 
-    <label>Clé anon</label>
-    <input id="anonKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbHN3YWZ3bWpiYW10dG9nYmZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDEyODMsImV4cCI6MjA5NTI3NzI4M30.dapt8RxNk6_-wer_63pNuaMmjFbU93V-SmorNhJuAA0" />
-
-    <label>Ton pseudo GitHub (owner)</label>
-    <input id="owner" placeholder="ex: tonpseudo" />
-
-    <label>Nom du repo</label>
-    <input id="repo" placeholder="ex: mon-repo" />
-
+  <!-- ÉTAPE 1 : CHARGER -->
+  <div class="card">
+    <h2><span class="step-num">1</span>Charger un fichier</h2>
     <label>Chemin du fichier</label>
-    <input id="path" value="README.md" />
-    <p class="hint">Un fichier qui existe à coup sûr. README.md est parfait.</p>
-
-    <button id="go" onclick="run()">Lire le fichier</button>
-    <div id="status"></div>
+    <input id="path" value="index.html" autocapitalize="none" autocorrect="off" spellcheck="false" />
+    <button class="btn-ghost" onclick="loadFile()">Charger le fichier</button>
+    <div class="status" id="loadStatus"></div>
   </div>
 
-  <div class="result panel" id="result">
-    <div class="meta" id="meta"></div>
-    <pre id="content"></pre>
+  <!-- ÉTAPE 2 : MODIFIER -->
+  <div class="card disabled-zone" id="editZone">
+    <h2><span class="step-num">2</span>Modifier</h2>
+
+    <label>Décris la modif à faire (IA)</label>
+    <textarea id="instruction" rows="2" placeholder="ex: ajoute un bouton de connexion en haut à droite"></textarea>
+    <div class="row">
+      <div style="flex:2">
+        <label>Modèle</label>
+        <select id="model">
+          <option value="gemini">Gemini (gratuit)</option>
+          <option value="groq">Llama via Groq (gratuit)</option>
+          <option value="claude">Claude (crédits)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-blue" onclick="askAI()">Générer avec l'IA</button>
+    <div class="status" id="aiStatus"></div>
+    <p class="hint">L'IA s'active une fois la fonction « ai-edit » + une clé déployées. En attendant, tu peux éditer le contenu à la main juste en dessous.</p>
+
+    <label>Contenu proposé (modifiable à la main)</label>
+    <textarea id="proposed" class="code-area" spellcheck="false" autocapitalize="none" autocorrect="off"></textarea>
   </div>
 
-  <p class="footnote">VeloraX Labs · outil de diagnostic interne</p>
+  <!-- ÉTAPE 3 : PR -->
+  <div class="card disabled-zone" id="prZone">
+    <h2><span class="step-num">3</span>Pull request</h2>
+    <label>Message de commit (optionnel)</label>
+    <input id="commitMsg" placeholder="ex: ajout du bouton login" />
+    <button class="btn-primary" onclick="createPR()">Créer la Pull Request</button>
+    <div class="status" id="prStatus"></div>
+
+    <div class="pr-box" id="prBox">
+      <div>✅ PR #<span id="prNum"></span> créée.</div>
+      <a id="prLink" href="#" target="_blank" rel="noopener">Voir la PR sur GitHub →</a>
+      <button class="btn-primary" onclick="mergePR()" style="margin-top:12px">Merger (Push) 🚀</button>
+      <div class="status" id="mergeStatus"></div>
+    </div>
+  </div>
 
 <script>
-async function run() {
   const $ = (id) => document.getElementById(id);
-  const btn = $('go'), status = $('status'), result = $('result');
-  const url = $('supaUrl').value.trim().replace(/\/$/, '');
-  const key = $('anonKey').value.trim();
-  const owner = $('owner').value.trim();
-  const repo = $('repo').value.trim();
-  const path = $('path').value.trim();
+  let state = { sha: null, prNumber: null };
 
-  status.className = ''; status.textContent = '';
-  result.className = 'result panel';
-
-  if (!owner || !repo || !path) {
-    status.className = 'err';
-    status.textContent = '⚠️ Remplis owner, repo et chemin.';
-    return;
+  function cfg() {
+    return {
+      url: $('supaUrl').value.trim().replace(/\/$/, ''),
+      key: $('anonKey').value.trim(),
+      owner: $('owner').value.trim(),
+      repo: $('repo').value.trim(),
+      base: $('base').value.trim() || 'main',
+    };
   }
 
-  btn.disabled = true;
-  status.textContent = '⏳ Appel en cours…';
-
-  try {
-    const res = await fetch(url + '/functions/v1/github-read', {
+  async function call(fn, payload) {
+    const c = cfg();
+    const res = await fetch(c.url + '/functions/v1/' + fn, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + key,
-      },
-      body: JSON.stringify({ owner, repo, path }),
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + c.key },
+      body: JSON.stringify(payload),
     });
-
-    const data = await res.json();
-
-    if (!res.ok || data.error) {
-      status.className = 'err';
-      status.textContent = '❌ ' + (data.error || ('Erreur ' + res.status));
-      $('content').textContent = JSON.stringify(data, null, 2);
-      $('meta').innerHTML = '';
-      result.className = 'result panel show';
-      return;
-    }
-
-    status.className = 'ok';
-    status.textContent = '✅ Lecture réussie ! L\'auth GitHub fonctionne.';
-    $('meta').innerHTML =
-      '<span class="tag">path: ' + data.path + '</span>' +
-      '<span class="tag">sha: ' + String(data.sha).slice(0, 12) + '…</span>' +
-      '<span class="tag">' + data.size + ' octets</span>';
-    $('content').textContent = data.content;
-    result.className = 'result panel show';
-  } catch (e) {
-    status.className = 'err';
-    status.textContent = '❌ ' + e.message + ' (souvent un souci CORS ou URL)';
-  } finally {
-    btn.disabled = false;
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok && !data.error, status: res.status, data };
   }
-}
+
+  function setStatus(id, cls, msg) {
+    const el = $(id); el.className = 'status ' + cls; el.textContent = msg;
+  }
+
+  // ÉTAPE 1
+  async function loadFile() {
+    const c = cfg();
+    setStatus('loadStatus', 'work', '⏳ Chargement…');
+    const r = await call('github-read', { owner: c.owner, repo: c.repo, path: $('path').value.trim() });
+    if (!r.ok) { setStatus('loadStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
+    state.sha = r.data.sha;
+    $('proposed').value = r.data.content;
+    setStatus('loadStatus', 'ok', '✅ Fichier chargé (' + r.data.size + ' octets).');
+    $('editZone').classList.remove('disabled-zone');
+    $('prZone').classList.remove('disabled-zone');
+  }
+
+  // ÉTAPE 2 (IA)
+  async function askAI() {
+    setStatus('aiStatus', 'work', '⏳ L\'IA réfléchit…');
+    const r = await call('ai-edit', {
+      path: $('path').value.trim(),
+      content: $('proposed').value,
+      instruction: $('instruction').value.trim(),
+      model: $('model').value,
+    });
+    if (!r.ok) { setStatus('aiStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status)) + ' (fonction ai-edit pas encore déployée ?)'); return; }
+    $('proposed').value = r.data.newContent || r.data.content || '';
+    setStatus('aiStatus', 'ok', '✅ Proposition générée. Relis-la avant de créer la PR.');
+  }
+
+  // ÉTAPE 3
+  async function createPR() {
+    const c = cfg();
+    setStatus('prStatus', 'work', '⏳ Création de la branche + PR…');
+    const r = await call('github-write', {
+      action: 'create_pr',
+      owner: c.owner, repo: c.repo, base: c.base,
+      path: $('path').value.trim(),
+      content: $('proposed').value,
+      sha: state.sha,
+      message: $('commitMsg').value.trim(),
+      prTitle: $('commitMsg').value.trim() || ('VeloraX: ' + $('path').value.trim()),
+    });
+    if (!r.ok) { setStatus('prStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
+    state.prNumber = r.data.prNumber;
+    $('prNum').textContent = r.data.prNumber;
+    $('prLink').href = r.data.prUrl;
+    $('prBox').classList.add('show');
+    setStatus('prStatus', 'ok', '✅ PR créée. Relis-la, puis merge quand tu veux.');
+  }
+
+  async function mergePR() {
+    const c = cfg();
+    setStatus('mergeStatus', 'work', '⏳ Merge en cours…');
+    const r = await call('github-write', { action: 'merge_pr', owner: c.owner, repo: c.repo, prNumber: state.prNumber });
+    if (!r.ok) { setStatus('mergeStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
+    setStatus('mergeStatus', 'ok', '🚀 Mergé ! Ton changement est sur ' + c.base + '.');
+  }
 </script>
 </body>
 </html>
