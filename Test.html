@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VeloraX Labs — Test lecture GitHub</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #111824;
+    --panel-2: #0d141e;
+    --line: #1e2a3a;
+    --text: #d7e0ec;
+    --muted: #6b7d93;
+    --accent: #4ade80;
+    --accent-dim: #1c3a2a;
+    --danger: #f87171;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #13243a 0%, transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    padding: 22px 16px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; letter-spacing: 0.5px; color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 12px var(--accent);
+  }
+  h1 {
+    font-size: 22px; font-weight: 600; line-height: 1.2;
+    margin-bottom: 6px; letter-spacing: -0.3px;
+  }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; }
+  label {
+    display: block; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin: 16px 0 6px;
+  }
+  input {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--line);
+    color: var(--text); font-family: var(--mono); font-size: 14px;
+    padding: 13px 14px; border-radius: 10px; outline: none;
+    transition: border-color .15s;
+  }
+  input:focus { border-color: var(--accent); }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+  button {
+    width: 100%; margin-top: 24px; padding: 16px;
+    background: var(--accent); color: #06140c; border: none;
+    border-radius: 12px; font-family: var(--mono); font-size: 15px;
+    font-weight: 700; letter-spacing: 0.3px; cursor: pointer;
+    transition: transform .08s, opacity .15s;
+  }
+  button:active { transform: scale(0.985); }
+  button:disabled { opacity: 0.5; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 16px; padding: 18px 16px;
+  }
+  #status {
+    margin-top: 22px; font-size: 13px; min-height: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  #status.ok { color: var(--accent); }
+  #status.err { color: var(--danger); }
+  .result {
+    margin-top: 14px; display: none;
+  }
+  .result.show { display: block; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+  }
+  .tag {
+    font-size: 11px; background: var(--accent-dim); color: var(--accent);
+    padding: 5px 10px; border-radius: 6px; border: 1px solid #244534;
+    word-break: break-all;
+  }
+  pre {
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px; font-size: 12.5px;
+    line-height: 1.55; color: #b8c6d8; white-space: pre-wrap;
+    word-break: break-word; max-height: 50vh; overflow: auto;
+  }
+  .footnote { color: var(--muted); font-size: 11px; margin-top: 26px; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="brand"><span class="dot"></span>VELORAX LABS · NO-CODE</div>
+  <h1>Test lecture GitHub</h1>
+  <p class="sub">Vérifie que la fonction <b>github-read</b> peut lire un fichier de ton repo.</p>
+
+  <div class="panel">
+    <label>URL Supabase</label>
+    <input id="supaUrl" value="https://valswafwmjbamttogbfe.supabase.co" />
+
+    <label>Clé anon</label>
+    <input id="anonKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbHN3YWZ3bWpiYW10dG9nYmZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDEyODMsImV4cCI6MjA5NTI3NzI4M30.dapt8RxNk6_-wer_63pNuaMmjFbU93V-SmorNhJuAA0" />
+
+    <label>Ton pseudo GitHub (owner)</label>
+    <input id="owner" placeholder="ex: tonpseudo" />
+
+    <label>Nom du repo</label>
+    <input id="repo" placeholder="ex: mon-repo" />
+
+    <label>Chemin du fichier</label>
+    <input id="path" value="README.md" />
+    <p class="hint">Un fichier qui existe à coup sûr. README.md est parfait.</p>
+
+    <button id="go" onclick="run()">Lire le fichier</button>
+    <div id="status"></div>
+  </div>
+
+  <div class="result panel" id="result">
+    <div class="meta" id="meta"></div>
+    <pre id="content"></pre>
+  </div>
+
+  <p class="footnote">VeloraX Labs · outil de diagnostic interne</p>
+
+<script>
+async function run() {
+  const $ = (id) => document.getElementById(id);
+  const btn = $('go'), status = $('status'), result = $('result');
+  const url = $('supaUrl').value.trim().replace(/\/$/, '');
+  const key = $('anonKey').value.trim();
+  const owner = $('owner').value.trim();
+  const repo = $('repo').value.trim();
+  const path = $('path').value.trim();
+
+  status.className = ''; status.textContent = '';
+  result.className = 'result panel';
+
+  if (!owner || !repo || !path) {
+    status.className = 'err';
+    status.textContent = '⚠️ Remplis owner, repo et chemin.';
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = '⏳ Appel en cours…';
+
+  try {
+    const res = await fetch(url + '/functions/v1/github-read', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key,
+      },
+      body: JSON.stringify({ owner, repo, path }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      status.className = 'err';
+      status.textContent = '❌ ' + (data.error || ('Erreur ' + res.status));
+      $('content').textContent = JSON.stringify(data, null, 2);
+      $('meta').innerHTML = '';
+      result.className = 'result panel show';
+      return;
+    }
+
+    status.className = 'ok';
+    status.textContent = '✅ Lecture réussie ! L\'auth GitHub fonctionne.';
+    $('meta').innerHTML =
+      '<span class="tag">path: ' + data.path + '</span>' +
+      '<span class="tag">sha: ' + String(data.sha).slice(0, 12) + '…</span>' +
+      '<span class="tag">' + data.size + ' octets</span>';
+    $('content').textContent = data.content;
+    result.className = 'result panel show';
+  } catch (e) {
+    status.className = 'err';
+    status.textContent = '❌ ' + e.message + ' (souvent un souci CORS ou URL)';
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
