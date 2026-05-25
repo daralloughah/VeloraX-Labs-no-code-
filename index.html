@@ -6,248 +6,378 @@
 <title>VeloraX Labs · no-code</title>
 <style>
   :root {
-    --bg: #0a0e14;
-    --panel: #111824;
-    --panel-2: #0d141e;
-    --line: #1e2a3a;
-    --text: #d7e0ec;
-    --muted: #6b7d93;
-    --accent: #4ade80;
-    --accent-dim: #1c3a2a;
-    --blue: #60a5fa;
-    --danger: #f87171;
+    --bg: #070b11;
+    --bg-2: #0b111a;
+    --panel: #0f1722;
+    --panel-2: #0b1019;
+    --line: #1b2738;
+    --line-soft: #141d2a;
+    --text: #e2e9f3;
+    --muted: #7186a0;
+    --muted-2: #4d5e74;
+    --accent: #34d399;
+    --accent-2: #22b07d;
+    --violet: #8b7cf6;
+    --blue: #5fa8fb;
+    --danger: #fb7185;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     background:
-      radial-gradient(1100px 520px at 85% -8%, #13243a 0%, transparent 58%),
+      radial-gradient(900px 480px at 92% -6%, #16304a 0%, transparent 55%),
+      radial-gradient(700px 400px at 0% 100%, #161033 0%, transparent 50%),
       var(--bg);
     color: var(--text);
-    font-family: var(--mono);
+    font-family: var(--sans);
     min-height: 100vh;
-    padding: 20px 14px 70px;
+    padding: 18px 13px 90px;
     -webkit-font-smoothing: antialiased;
   }
-  .brand {
-    display: flex; align-items: center; gap: 9px;
-    font-size: 12px; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 3px;
+
+  /* ── Header ── */
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .logo {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(145deg, var(--accent), var(--violet));
+    display: grid; place-items: center; font-family: var(--mono);
+    font-weight: 800; font-size: 15px; color: #06140c;
+    box-shadow: 0 4px 18px -4px var(--accent);
   }
-  .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
-  h1 { font-size: 21px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 18px; }
+  .brand b { font-size: 15px; letter-spacing: -0.2px; }
+  .brand small { display: block; font-size: 10px; color: var(--muted); letter-spacing: 1.5px; }
+  .gear {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--muted); font-size: 17px; cursor: pointer;
+  }
+
+  /* ── Repo bar ── */
+  .repobar {
+    display: flex; align-items: center; gap: 9px; padding: 11px 13px; margin-bottom: 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 13px; font-size: 13px;
+  }
+  .repobar .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--muted-2); flex-shrink: 0; }
+  .repobar.live .pulse { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .repobar .name { font-family: var(--mono); color: var(--text); }
+  .repobar .sub { color: var(--muted); margin-left: auto; font-size: 11px; }
 
   .card {
     background: var(--panel); border: 1px solid var(--line);
-    border-radius: 16px; padding: 16px; margin-bottom: 14px;
+    border-radius: 16px; padding: 15px; margin-bottom: 13px;
   }
-  .card h2 {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  .card-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
   }
-  .step-num {
-    width: 18px; height: 18px; border-radius: 50%; background: var(--accent-dim);
-    color: var(--accent); font-size: 10px; display: grid; place-items: center; border: 1px solid #244534;
-  }
-  label { display: block; font-size: 11px; color: var(--muted); margin: 12px 0 5px; }
+
+  label { display: block; font-size: 11px; color: var(--muted); margin: 11px 0 5px; }
   input, textarea, select {
     width: 100%; background: var(--panel-2); border: 1px solid var(--line);
     color: var(--text); font-family: var(--mono); font-size: 14px;
-    padding: 12px 13px; border-radius: 10px; outline: none; transition: border-color .15s;
+    padding: 12px 13px; border-radius: 11px; outline: none; transition: border-color .15s, box-shadow .15s;
   }
-  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-  textarea { resize: vertical; line-height: 1.5; }
-  .code-area { min-height: 180px; font-size: 12.5px; color: #b8c6d8; }
-  .row { display: flex; gap: 8px; }
-  .row > * { flex: 1; }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(52,211,153,.12); }
+  textarea { resize: vertical; line-height: 1.55; font-family: var(--sans); }
+  .row { display: flex; gap: 9px; } .row > * { flex: 1; }
 
-  button {
-    width: 100%; padding: 14px; border: none; border-radius: 11px;
-    font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.2px;
-    cursor: pointer; transition: transform .08s, opacity .15s; margin-top: 14px;
+  /* ── Buttons ── */
+  button { font-family: var(--sans); cursor: pointer; border: none; transition: transform .07s, filter .15s, opacity .15s; }
+  button:active { transform: translateY(1px) scale(.99); }
+  button:disabled { opacity: .4; }
+  .btn {
+    width: 100%; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 650;
+    letter-spacing: .2px; margin-top: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  button:active { transform: scale(0.985); }
-  button:disabled { opacity: 0.45; }
-  .btn-primary { background: var(--accent); color: #06140c; }
-  .btn-blue { background: var(--blue); color: #07182e; }
-  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .btn-primary { background: linear-gradient(145deg, var(--accent), var(--accent-2)); color: #04130b; box-shadow: 0 6px 20px -8px var(--accent); }
+  .btn-ai { background: linear-gradient(145deg, var(--violet), #6d5ef0); color: #fff; box-shadow: 0 6px 20px -8px var(--violet); }
+  .btn-ghost { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); }
+  .btn:hover { filter: brightness(1.06); }
 
-  .status { margin-top: 12px; font-size: 13px; min-height: 16px; display: flex; gap: 7px; align-items: flex-start; }
-  .status.ok { color: var(--accent); }
-  .status.err { color: var(--danger); }
-  .status.work { color: var(--blue); }
-
-  details summary {
-    cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--muted); list-style: none; display: flex; align-items: center; gap: 8px;
+  /* ── File panel ── */
+  .files { max-height: 230px; overflow: auto; margin: 0 -4px; }
+  .file {
+    display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 10px;
+    font-family: var(--mono); font-size: 13px; color: var(--text); cursor: pointer; border: 1px solid transparent;
   }
-  details summary::-webkit-details-marker { display: none; }
-  details summary::before { content: "⚙"; color: var(--muted); }
-  details[open] summary { margin-bottom: 8px; }
+  .file:active { background: var(--panel-2); }
+  .file.active { background: rgba(52,211,153,.08); border-color: rgba(52,211,153,.3); }
+  .file .ico { color: var(--muted); font-size: 12px; }
+  .file .sz { margin-left: auto; color: var(--muted-2); font-size: 10px; }
+  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 18px 0; }
 
-  .pr-box {
-    margin-top: 14px; padding: 13px; border-radius: 11px;
-    background: var(--accent-dim); border: 1px solid #244534; display: none;
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 6px; background: var(--panel-2); padding: 4px; border-radius: 12px; border: 1px solid var(--line-soft); }
+  .tab {
+    flex: 1; padding: 9px; border-radius: 9px; background: transparent; color: var(--muted);
+    font-size: 13px; font-weight: 600; text-align: center;
   }
+  .tab.active { background: var(--panel); color: var(--text); box-shadow: 0 1px 8px -2px #000; }
+  .tab:disabled { opacity: .35; }
+
+  .code-area { min-height: 240px; font-size: 12.5px; color: #c5d2e2; line-height: 1.5; }
+  .preview-wrap { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+  .preview-wrap iframe { width: 100%; height: 360px; border: 0; display: block; background: #fff; }
+  .pv-bar { background: var(--panel-2); border-bottom: 1px solid var(--line); padding: 7px 11px; font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .pv-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .pv-note { color: var(--muted); font-size: 11px; padding: 16px; text-align: center; }
+
+  .status { margin-top: 11px; font-size: 13px; min-height: 16px; line-height: 1.4; }
+  .status.ok { color: var(--accent); } .status.err { color: var(--danger); } .status.work { color: var(--blue); }
+
+  .pr-box { margin-top: 13px; padding: 13px; border-radius: 12px; background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.25); display: none; }
   .pr-box.show { display: block; }
   .pr-box a { color: var(--accent); word-break: break-all; font-size: 13px; }
-  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
-  .disabled-zone { opacity: 0.5; pointer-events: none; }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+  .hidden { display: none !important; }
+  .overlay { position: fixed; inset: 0; background: rgba(4,7,11,.7); backdrop-filter: blur(3px); z-index: 50; display: none; align-items: flex-start; padding: 60px 14px; }
+  .overlay.show { display: flex; }
+  .overlay .card { width: 100%; max-width: 460px; margin: 0 auto; }
 </style>
 </head>
 <body>
-  <div class="brand"><span class="dot"></span>VELORAX LABS</div>
-  <h1>no-code agent</h1>
-
-  <!-- CONFIG (repliée par défaut) -->
-  <div class="card">
-    <details>
-      <summary>Configuration</summary>
-      <label>URL Supabase</label>
-      <input id="supaUrl" value="https://valswafwmjbamttogbfe.supabase.co" autocapitalize="none" autocorrect="off" spellcheck="false" />
-      <label>Clé anon</label>
-      <input id="anonKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbHN3YWZ3bWpiYW10dG9nYmZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDEyODMsImV4cCI6MjA5NTI3NzI4M30.dapt8RxNk6_-wer_63pNuaMmjFbU93V-SmorNhJuAA0" autocapitalize="none" autocorrect="off" spellcheck="false" />
-      <div class="row">
-        <div><label>Owner</label><input id="owner" value="daralloughah" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
-        <div><label>Repo</label><input id="repo" value="Comptage" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
-      </div>
-      <label>Branche de base</label>
-      <input id="base" value="main" autocapitalize="none" autocorrect="off" spellcheck="false" />
-    </details>
-  </div>
-
-  <!-- ÉTAPE 1 : CHARGER -->
-  <div class="card">
-    <h2><span class="step-num">1</span>Charger un fichier</h2>
-    <label>Chemin du fichier</label>
-    <input id="path" value="index.html" autocapitalize="none" autocorrect="off" spellcheck="false" />
-    <button class="btn-ghost" onclick="loadFile()">Charger le fichier</button>
-    <div class="status" id="loadStatus"></div>
-  </div>
-
-  <!-- ÉTAPE 2 : MODIFIER -->
-  <div class="card disabled-zone" id="editZone">
-    <h2><span class="step-num">2</span>Modifier</h2>
-
-    <label>Décris la modif à faire (IA)</label>
-    <textarea id="instruction" rows="2" placeholder="ex: ajoute un bouton de connexion en haut à droite"></textarea>
-    <div class="row">
-      <div style="flex:2">
-        <label>Modèle</label>
-        <select id="model">
-          <option value="gemini">Gemini (gratuit)</option>
-          <option value="groq">Llama via Groq (gratuit)</option>
-          <option value="claude">Claude (crédits)</option>
-        </select>
-      </div>
+  <div class="top">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div><b>VeloraX Labs</b><small>NO-CODE AGENT</small></div>
     </div>
-    <button class="btn-blue" onclick="askAI()">Générer avec l'IA</button>
-    <div class="status" id="aiStatus"></div>
-    <p class="hint">L'IA s'active une fois la fonction « ai-edit » + une clé déployées. En attendant, tu peux éditer le contenu à la main juste en dessous.</p>
-
-    <label>Contenu proposé (modifiable à la main)</label>
-    <textarea id="proposed" class="code-area" spellcheck="false" autocapitalize="none" autocorrect="off"></textarea>
+    <button class="gear" onclick="openConfig()">⚙</button>
   </div>
 
-  <!-- ÉTAPE 3 : PR -->
-  <div class="card disabled-zone" id="prZone">
-    <h2><span class="step-num">3</span>Pull request</h2>
-    <label>Message de commit (optionnel)</label>
-    <input id="commitMsg" placeholder="ex: ajout du bouton login" />
-    <button class="btn-primary" onclick="createPR()">Créer la Pull Request</button>
-    <div class="status" id="prStatus"></div>
+  <div class="repobar" id="repobar">
+    <span class="pulse"></span>
+    <span class="name" id="repoName">aucun repo connecté</span>
+    <span class="sub" id="repoSub">appuie sur ⚙</span>
+  </div>
 
+  <!-- Panneau fichiers -->
+  <div class="card hidden" id="filesCard">
+    <div class="card-title">Fichiers du repo <span id="fileCount" style="margin-left:auto;color:var(--muted-2)"></span></div>
+    <div class="files" id="fileList"><div class="empty">Connecte un repo pour voir les fichiers.</div></div>
+  </div>
+
+  <!-- Éditeur -->
+  <div class="card hidden" id="editorCard">
+    <div class="card-title">
+      <span id="openPath" style="font-family:var(--mono);text-transform:none;letter-spacing:0;color:var(--text)">—</span>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tabCode" onclick="switchTab('code')">Code</button>
+      <button class="tab" id="tabPreview" onclick="switchTab('preview')">Aperçu</button>
+    </div>
+
+    <div id="codeView">
+      <label>Contenu (modifiable à la main)</label>
+      <textarea id="editor" class="code-area" spellcheck="false" autocapitalize="none" autocorrect="off" oninput="onEdit()"></textarea>
+    </div>
+
+    <div id="previewView" class="hidden">
+      <div class="preview-wrap">
+        <div class="pv-bar"><span class="pv-dot"></span><span id="pvLabel">aperçu</span></div>
+        <iframe id="pvFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+        <div class="pv-note hidden" id="pvNote"></div>
+      </div>
+      <button class="btn btn-ghost" onclick="refreshPreview()">↻ Rafraîchir l'aperçu</button>
+    </div>
+  </div>
+
+  <!-- IA -->
+  <div class="card hidden" id="aiCard">
+    <div class="card-title">Demander à l'IA</div>
+    <textarea id="instruction" rows="2" placeholder="ex: change le titre en Bonjour VeloraX"></textarea>
+    <div class="row" style="margin-top:10px">
+      <select id="model">
+        <option value="gemini">Gemini (gratuit)</option>
+        <option value="groq">Llama / Groq (bientôt)</option>
+        <option value="claude">Claude (bientôt)</option>
+      </select>
+    </div>
+    <button class="btn btn-ai" onclick="askAI()">✦ Générer avec l'IA</button>
+    <div class="status" id="aiStatus"></div>
+    <p class="hint">L'IA propose une version du fichier ouvert. Tu relis, puis tu crées la PR. Elle ne touche jamais GitHub directement.</p>
+  </div>
+
+  <!-- PR -->
+  <div class="card hidden" id="prCard">
+    <div class="card-title">Pull request</div>
+    <input id="commitMsg" placeholder="Message de commit (optionnel)" />
+    <button class="btn btn-primary" onclick="createPR()">Créer la Pull Request</button>
+    <div class="status" id="prStatus"></div>
     <div class="pr-box" id="prBox">
       <div>✅ PR #<span id="prNum"></span> créée.</div>
       <a id="prLink" href="#" target="_blank" rel="noopener">Voir la PR sur GitHub →</a>
-      <button class="btn-primary" onclick="mergePR()" style="margin-top:12px">Merger (Push) 🚀</button>
+      <button class="btn btn-primary" onclick="mergePR()" style="margin-top:11px">🚀 Merger (Push)</button>
       <div class="status" id="mergeStatus"></div>
+    </div>
+  </div>
+
+  <!-- Config overlay -->
+  <div class="overlay" id="configOverlay">
+    <div class="card">
+      <div class="card-title">Configuration <span style="margin-left:auto;cursor:pointer;color:var(--muted)" onclick="closeConfig()">✕</span></div>
+      <label>URL Supabase</label>
+      <input id="supaUrl" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <label>Clé anon</label>
+      <input id="anonKey" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <div class="row">
+        <div><label>Owner</label><input id="owner" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
+        <div><label>Repo</label><input id="repo" autocapitalize="none" autocorrect="off" spellcheck="false" /></div>
+      </div>
+      <label>Branche de base</label>
+      <input id="base" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <button class="btn btn-primary" onclick="connectRepo()">Connecter le repo</button>
+      <div class="status" id="cfgStatus"></div>
+      <p class="hint">Enregistré sur cet appareil : tu ne le ressaisis qu'une fois.</p>
     </div>
   </div>
 
 <script>
   const $ = (id) => document.getElementById(id);
-  let state = { sha: null, prNumber: null };
+  const DEFAULTS = {
+    supaUrl: "https://valswafwmjbamttogbfe.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbHN3YWZ3bWpiYW10dG9nYmZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDEyODMsImV4cCI6MjA5NTI3NzI4M30.dapt8RxNk6_-wer_63pNuaMmjFbU93V-SmorNhJuAA0",
+    owner: "daralloughah", repo: "Comptage", base: "main",
+  };
+  let cfg = { ...DEFAULTS };
+  let state = { path: null, sha: null, prNumber: null, tab: "code" };
 
-  function cfg() {
-    return {
-      url: $('supaUrl').value.trim().replace(/\/$/, ''),
-      key: $('anonKey').value.trim(),
-      owner: $('owner').value.trim(),
-      repo: $('repo').value.trim(),
-      base: $('base').value.trim() || 'main',
-    };
+  function saveCfg() { try { localStorage.setItem("velorax_cfg", JSON.stringify(cfg)); } catch (e) {} }
+  function loadCfg() { try { const v = localStorage.getItem("velorax_cfg"); if (v) cfg = { ...DEFAULTS, ...JSON.parse(v) }; } catch (e) {} }
+
+  function fillConfigInputs() {
+    $("supaUrl").value = cfg.supaUrl; $("anonKey").value = cfg.anonKey;
+    $("owner").value = cfg.owner; $("repo").value = cfg.repo; $("base").value = cfg.base;
   }
+  function openConfig() { fillConfigInputs(); $("configOverlay").classList.add("show"); }
+  function closeConfig() { $("configOverlay").classList.remove("show"); }
 
   async function call(fn, payload) {
-    const c = cfg();
-    const res = await fetch(c.url + '/functions/v1/' + fn, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + c.key },
+    const res = await fetch(cfg.supaUrl.replace(/\/$/, "") + "/functions/v1/" + fn, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.anonKey },
       body: JSON.stringify(payload),
     });
     const data = await res.json().catch(() => ({}));
     return { ok: res.ok && !data.error, status: res.status, data };
   }
+  function setStatus(id, cls, msg) { const el = $(id); el.className = "status " + cls; el.textContent = msg; }
 
-  function setStatus(id, cls, msg) {
-    const el = $(id); el.className = 'status ' + cls; el.textContent = msg;
+  // ── Connexion repo ──
+  async function connectRepo() {
+    cfg = {
+      supaUrl: $("supaUrl").value.trim(), anonKey: $("anonKey").value.trim(),
+      owner: $("owner").value.trim(), repo: $("repo").value.trim(), base: $("base").value.trim() || "main",
+    };
+    saveCfg();
+    setStatus("cfgStatus", "work", "⏳ Connexion…");
+    const r = await call("github-tree", { owner: cfg.owner, repo: cfg.repo, base: cfg.base });
+    if (!r.ok) { setStatus("cfgStatus", "err", "❌ " + (r.data.error || ("Erreur " + r.status))); return; }
+    setStatus("cfgStatus", "ok", "✅ " + r.data.files.length + " fichiers trouvés.");
+    renderRepo(r.data.files);
+    setTimeout(closeConfig, 600);
   }
 
-  // ÉTAPE 1
-  async function loadFile() {
-    const c = cfg();
-    setStatus('loadStatus', 'work', '⏳ Chargement…');
-    const r = await call('github-read', { owner: c.owner, repo: c.repo, path: $('path').value.trim() });
-    if (!r.ok) { setStatus('loadStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
-    state.sha = r.data.sha;
-    $('proposed').value = r.data.content;
-    setStatus('loadStatus', 'ok', '✅ Fichier chargé (' + r.data.size + ' octets).');
-    $('editZone').classList.remove('disabled-zone');
-    $('prZone').classList.remove('disabled-zone');
+  function renderRepo(files) {
+    $("repobar").classList.add("live");
+    $("repoName").textContent = cfg.owner + "/" + cfg.repo;
+    $("repoSub").textContent = cfg.base;
+    $("fileCount").textContent = files.length + " fichiers";
+    $("filesCard").classList.remove("hidden");
+    const list = $("fileList");
+    if (!files.length) { list.innerHTML = '<div class="empty">Repo vide.</div>'; return; }
+    files.sort((a, b) => a.path.localeCompare(b.path));
+    list.innerHTML = files.map((f) =>
+      `<div class="file" data-path="${f.path}" onclick="openFile(this.dataset.path)">
+        <span class="ico">›</span>${f.path}<span class="sz">${f.size || 0} o</span>
+      </div>`).join("");
   }
 
-  // ÉTAPE 2 (IA)
+  // ── Ouvrir un fichier ──
+  async function openFile(path) {
+    document.querySelectorAll(".file").forEach((el) => el.classList.toggle("active", el.dataset.path === path));
+    setStatus("aiStatus", "work", ""); $("prBox").classList.remove("show");
+    const r = await call("github-read", { owner: cfg.owner, repo: cfg.repo, path });
+    if (!r.ok) { alert("Erreur de chargement : " + (r.data.error || r.status)); return; }
+    state.path = path; state.sha = r.data.sha;
+    $("openPath").textContent = path;
+    $("editor").value = r.data.content;
+    $("editorCard").classList.remove("hidden");
+    $("aiCard").classList.remove("hidden");
+    $("prCard").classList.remove("hidden");
+    const isHtml = /\.html?$/i.test(path);
+    $("tabPreview").disabled = !isHtml;
+    switchTab("code");
+    window.scrollTo({ top: $("editorCard").offsetTop - 70, behavior: "smooth" });
+  }
+
+  function onEdit() { if (state.tab === "preview") refreshPreview(); }
+
+  function switchTab(t) {
+    state.tab = t;
+    $("tabCode").classList.toggle("active", t === "code");
+    $("tabPreview").classList.toggle("active", t === "preview");
+    $("codeView").classList.toggle("hidden", t !== "code");
+    $("previewView").classList.toggle("hidden", t !== "preview");
+    if (t === "preview") refreshPreview();
+  }
+
+  function refreshPreview() {
+    const isHtml = /\.html?$/i.test(state.path || "");
+    const note = $("pvNote"), frame = $("pvFrame");
+    if (!isHtml) {
+      frame.classList.add("hidden"); note.classList.remove("hidden");
+      note.textContent = "L'aperçu en direct n'est dispo que pour les fichiers .html.";
+      return;
+    }
+    note.classList.add("hidden"); frame.classList.remove("hidden");
+    $("pvLabel").textContent = state.path;
+    frame.srcdoc = $("editor").value;
+  }
+
+  // ── IA (fichier ouvert) ──
   async function askAI() {
-    setStatus('aiStatus', 'work', '⏳ L\'IA réfléchit…');
-    const r = await call('ai-edit', {
-      path: $('path').value.trim(),
-      content: $('proposed').value,
-      instruction: $('instruction').value.trim(),
-      model: $('model').value,
+    if (!state.path) { setStatus("aiStatus", "err", "❌ Ouvre d'abord un fichier."); return; }
+    setStatus("aiStatus", "work", "✦ L'IA réfléchit…");
+    const r = await call("ai-edit", {
+      path: state.path, content: $("editor").value,
+      instruction: $("instruction").value.trim(), model: $("model").value,
     });
-    if (!r.ok) { setStatus('aiStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status)) + ' (fonction ai-edit pas encore déployée ?)'); return; }
-    $('proposed').value = r.data.newContent || r.data.content || '';
-    setStatus('aiStatus', 'ok', '✅ Proposition générée. Relis-la avant de créer la PR.');
+    if (!r.ok) { setStatus("aiStatus", "err", "❌ " + (r.data.error || ("Erreur " + r.status))); return; }
+    $("editor").value = r.data.newContent || "";
+    setStatus("aiStatus", "ok", "✅ " + (r.data.note || "Proposition générée.") + " Relis avant de créer la PR.");
+    if (state.tab === "preview") refreshPreview();
   }
 
-  // ÉTAPE 3
+  // ── PR ──
   async function createPR() {
-    const c = cfg();
-    setStatus('prStatus', 'work', '⏳ Création de la branche + PR…');
-    const r = await call('github-write', {
-      action: 'create_pr',
-      owner: c.owner, repo: c.repo, base: c.base,
-      path: $('path').value.trim(),
-      content: $('proposed').value,
-      sha: state.sha,
-      message: $('commitMsg').value.trim(),
-      prTitle: $('commitMsg').value.trim() || ('VeloraX: ' + $('path').value.trim()),
+    if (!state.path) { setStatus("prStatus", "err", "❌ Ouvre d'abord un fichier."); return; }
+    setStatus("prStatus", "work", "⏳ Création de la branche + PR…");
+    const msg = $("commitMsg").value.trim();
+    const r = await call("github-write", {
+      action: "create_pr", owner: cfg.owner, repo: cfg.repo, base: cfg.base,
+      path: state.path, content: $("editor").value, sha: state.sha,
+      message: msg, prTitle: msg || ("VeloraX: " + state.path),
     });
-    if (!r.ok) { setStatus('prStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
+    if (!r.ok) { setStatus("prStatus", "err", "❌ " + (r.data.error || ("Erreur " + r.status))); return; }
     state.prNumber = r.data.prNumber;
-    $('prNum').textContent = r.data.prNumber;
-    $('prLink').href = r.data.prUrl;
-    $('prBox').classList.add('show');
-    setStatus('prStatus', 'ok', '✅ PR créée. Relis-la, puis merge quand tu veux.');
+    $("prNum").textContent = r.data.prNumber; $("prLink").href = r.data.prUrl;
+    $("prBox").classList.add("show");
+    setStatus("prStatus", "ok", "✅ PR créée. Relis-la sur GitHub, puis merge.");
   }
 
   async function mergePR() {
-    const c = cfg();
-    setStatus('mergeStatus', 'work', '⏳ Merge en cours…');
-    const r = await call('github-write', { action: 'merge_pr', owner: c.owner, repo: c.repo, prNumber: state.prNumber });
-    if (!r.ok) { setStatus('mergeStatus', 'err', '❌ ' + (r.data.error || ('Erreur ' + r.status))); return; }
-    setStatus('mergeStatus', 'ok', '🚀 Mergé ! Ton changement est sur ' + c.base + '.');
+    setStatus("mergeStatus", "work", "⏳ Merge…");
+    const r = await call("github-write", { action: "merge_pr", owner: cfg.owner, repo: cfg.repo, prNumber: state.prNumber });
+    if (!r.ok) { setStatus("mergeStatus", "err", "❌ " + (r.data.error || ("Erreur " + r.status))); return; }
+    setStatus("mergeStatus", "ok", "🚀 Mergé sur " + cfg.base + " ! Pense à recharger le fichier pour repartir du neuf.");
   }
+
+  // ── Init ──
+  loadCfg();
+  fillConfigInputs();
+  // Connexion auto si une config est déjà enregistrée
+  if (cfg.owner && cfg.repo) { connectRepo(); }
 </script>
 </body>
 </html>
